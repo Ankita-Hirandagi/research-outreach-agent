@@ -9,7 +9,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# DeepSeek client
+# DeepSeek client setup
 client = OpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com"
@@ -34,7 +34,7 @@ def generate():
         # Read CSV
         df = pd.read_csv(file)
 
-        # Check required columns
+        # Validate required columns
         required_columns = ["name", "email", "topic", "notes"]
         for col in required_columns:
             if col not in df.columns:
@@ -42,7 +42,7 @@ def generate():
 
         outputs = []
 
-        # Process each row
+        # Loop through rows
         for _, row in df.iterrows():
             name = row.get("name", "")
             topic = row.get("topic", "")
@@ -58,6 +58,7 @@ Notes: {notes}
 Make it professional, concise, and engaging.
 """
 
+            # DeepSeek API call
             response = client.chat.completions.create(
                 model="deepseek-chat",
                 messages=[{"role": "user", "content": prompt}]
@@ -66,14 +67,13 @@ Make it professional, concise, and engaging.
             message = response.choices[0].message.content
             outputs.append(message)
 
-        # Add results to CSV
+        # Add output column
         df["generated_message"] = outputs
 
-        # Save output
+        # Save file
         output_file = "output.csv"
         df.to_csv(output_file, index=False)
 
-        # Send file
         return send_file(output_file, as_attachment=True)
 
     except Exception as e:
