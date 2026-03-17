@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Research Outreach Generator</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<h2>📄 AI Research Outreach Generator</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">Generate Messages</button>
+</form>
+
+{% if results %}
+    <a href="/download">
+        <button>⬇ Download CSV</button>
+    </a>
+
+    <h3>Generated Messages:</h3>
+
+    {% for msg in results %}
+        <div class="card">
+            {{ msg }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>

@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-# Load API key
 load_dotenv()
 
 client = OpenAI(
@@ -10,25 +9,23 @@ client = OpenAI(
     base_url="https://api.deepseek.com"
 )
 
-def generate_outreach():
-    prompt = """
+def generate_outreach(data):
+    prompt = f"""
 You are an expert scientific communication writer.
 
 Write a 3 sentence outreach message:
-
 1. Acknowledge researcher and institution
 2. Summarize research insight
 3. Explain relevance to health innovators
 
 Keep academic tone. No hype.
 
-Input:
-Researcher Name: Dr. Sarah Chen
-Institution: Harvard Medical School
-Article Title: AI-driven early detection of cardiovascular disease
-Article Summary: A machine learning model predicts cardiovascular risk using biomarkers.
-Signal Strength: High
-Contact Channel: Email
+Researcher Name: {data['researcher_name']}
+Institution: {data['institution']}
+Article Title: {data['article_title']}
+Article Summary: {data['article_summary']}
+Signal Strength: {data['signal_strength']}
+Contact Channel: {data['contact_channel']}
 
 Return only the final message.
 """
@@ -43,9 +40,3 @@ Return only the final message.
     )
 
     return response.choices[0].message.content.strip()
-
-
-result = generate_outreach()
-
-print("\nGenerated Outreach Message:\n")
-print(result)
